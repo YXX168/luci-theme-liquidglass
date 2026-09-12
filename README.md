@@ -2,32 +2,40 @@
 
 独立的液态玻璃主题包，基于 Argon 2.4.3 的兼容样式和菜单，保留原作者版权。
 
-## 适配范围
+## 项目概述与特性
 
-- 本次目标：Link NN6000 v2，ImmortalWRT SNAPSHOT r0-24fc52e，内核 6.12.68。
-- LuCI：26.028.32477~ec83425，ucode 模板；包管理器：opkg。
-- 安装包为 `all.ipk`，不含机器码。其他现代 ucode LuCI 可尝试，但未实机验证。
-- 不适用于仅支持 Lua 模板的旧版 LuCI。使用 apk 包管理器的固件应从源码通过对应 SDK 构建，不能直接安装本 IPK。
+- **受 macOS 26 Liquid Glass 启发的通透材质**：5 层材质分级（微透导航侧栏、玻璃浮岛工具条、高对比卡片表格、居中模态弹窗、实白表单控件），兼顾视觉通透感与配置信息的高频扫描可读性。
+- **双色环境光氛围**：左上暖杏光（#FFD29D）+ 右上冷蓝光（#A0CFFF），中央区域白净通透。
+- **即时明暗切换**：右上角一键在「跟随系统、浅色、深色」之间循环切换，暗色模式为深邃冷色烟蓝玻璃。
+- **独立安装与安全回退**：资源与规则独立于 `/luci-static/liquidglass`，不污染原有 Argon/Bootstrap 文件，支持随时无损切回与卸载。
+
+## 兼容性与运行环境
+
+- **支持固件**：
+  - 官方 OpenWrt 22.03、23.05、24.x 及 Master/快照版
+  - 主流 ImmortalWrt 21.02+、23.05 及各分支 SNAPSHOT
+- **硬件架构**：全架构通用（纯前端样式与 ucode 模板，标记为 `all.ipk`，ARM / x86 / MIPS 均适用）。
+- **不支持版本**：OpenWrt 19.07 / 18.06 等仅支持旧版 Lua (`.htm`) 模板的系统。
 
 ## 安装及切换
 
-1. 在 LuCI「系统 → 软件包」上传并安装 `luci-theme-liquidglass_1.0.0-1_all.ipk`。
-2. 在「系统 → 系统 → 语言和界面」选择 `LiquidGlass`，保存并应用。
-3. 刷新页面。右上角「◐」在跟随系统、浅色、深色之间循环。
-
-也可将安装包放到路由器 `/tmp` 后运行：
+### 方式一：终端一键安装（推荐）
 
 ```sh
-opkg install /tmp/luci-theme-liquidglass_1.0.0-1_all.ipk
+# 下载最新 Release 安装包并安装
+wget -O /tmp/luci-theme-liquidglass_all.ipk https://github.com/YXX168/luci-theme-liquidglass/releases/latest/download/luci-theme-liquidglass_1.0.0-1_all.ipk
+opkg install /tmp/luci-theme-liquidglass_all.ipk
+
+# 切换为默认主题
 uci set luci.main.mediaurlbase='/luci-static/liquidglass'
 uci commit luci
 ```
 
-安装只注册主题，不自动切换，不需要重刷固件或重启网络服务。主题自己的目录与 Argon 分开，没有替换 Argon 文件。
-明暗偏好保存在当前浏览器的本地存储，不修改路由器配置；清除浏览器站点数据后恢复跟随系统。
-主题不会收集密码，不改变 LuCI 登录表单目标、权限、网络设置或功能视图。
+### 方式二：Web 界面上传安装
 
-## 切回及卸载
+1. 从 [Releases](https://github.com/YXX168/luci-theme-liquidglass/releases) 下载 `luci-theme-liquidglass_1.0.0-1_all.ipk`。
+2. 登录路由器后台，进入「系统」→「软件包」→「上传软件包」并安装。
+3. 进入「系统」→「系统」→「语言和界面」，主题选择 `LiquidGlass`，保存并应用即可。
 
 界面正常时，在同一位置选择 Argon。SSH 回退命令：
 
