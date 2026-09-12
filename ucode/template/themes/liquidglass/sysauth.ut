@@ -1,0 +1,40 @@
+{#
+ Based on Argon sysauth, Copyright 2020 Jerrykuku.
+ LuCI bootstrap: Copyright 2008 Steven Barth, 2008-2019 Jo-Philipp Wich,
+ 2012 David Menting. Apache-2.0.
+ Modified 2026 for Liquid Glass: standalone glass login, local assets,
+ accessible labels and autocomplete. Authentication remains native LuCI.
+-#}
+{% include("themes/" + theme + "/out_header_login") %}
+{%
+    const boardinfo = ubus.call("system", "board");
+    const hostname = striptags(boardinfo?.hostname ?? '?');
+%}
+<div class="lg-backdrop" aria-hidden="true"></div>
+<main class="lg-login-shell">
+    <div class="lg-login-top"><button class="lg-appearance" type="button" aria-label="Appearance" data-lg-appearance>◐</button></div>
+    <section class="lg-login-card" aria-label="{{ _('Log in') }}">
+        <div class="lg-login-header">
+            <img class="lg-login-logo" src="{{ media }}/img/liquidglass.svg" alt="" width="64" height="64">
+            <h1 class="lg-login-title">{{ hostname }}</h1>
+            <p class="lg-subtitle">{{ _('Authorization Required') }}</p>
+        </div>
+        <form method="post" action="{{ http.getenv('REQUEST_URI') }}">
+            {% if (fuser): %}<div class="errorbox" role="alert">{{ _('Invalid username and/or password! Please try again.') }}</div>{% endif %}
+            <div class="lg-field-group">
+                <label for="lg-user">{{ _('Username') }}</label>
+                <input id="lg-user" name="luci_username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" value="{{ entityencode(duser, true) }}">
+            </div>
+            <div class="lg-field-group">
+                <label for="lg-pass">{{ _('Password') }}</label>
+                <input id="lg-pass" name="luci_password" type="password" autocomplete="current-password" autofocus>
+            </div>
+            <div class="lg-login-actions">
+                <input class="cbi-button cbi-button-apply lg-login-submit" type="submit" value="{{ _('Log in') }}">
+            </div>
+        </form>
+    </section>
+    <footer class="lg-login-footer">Liquid Glass 1.0 · <a href="https://github.com/jerrykuku/luci-theme-argon" target="_blank" rel="noopener noreferrer">Based on Argon</a> · {{ version.distname }}</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,21 @@
+Liquid Glass for LuCI 1.0.0
+
+This is an independent derivative theme, not an official Argon release.
+Base: luci-theme-argon 2.4.3-r20250722, as shipped by ZqinKing's
+ImmortalWRT SNAPSHOT r0-24fc52e (LuCI 26.028.32477~ec83425).
+Upstream: https://github.com/jerrykuku/luci-theme-argon
+
+Argon: Copyright 2020 Jerrykuku. Apache License 2.0.
+Material: Copyright 2015 Lutty Yang. Apache License 2.0.
+LuCI bootstrap: Copyright 2008 Steven Barth,
+2008-2019 Jo-Philipp Wich, 2012 David Menting. Apache License 2.0.
+Original notices remain in the derived templates.
+
+Modifications (2026): separate liquidglass namespace; new glass stylesheet
+and local appearance controller; native accessible login form; reduced
+motion and keyboard menu handling; standalone package registration and
+uninstall fallback. Text uses operating-system fonts. The inherited Argon
+icon font and compatibility assets remain in use.
+
+No router credentials, network settings, background photographs, or account
+data are contained in the package or source release.

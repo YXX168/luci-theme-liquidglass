@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+[ -z "${IPKG_INSTROOT:-}" ] || exit 0
+/usr/libexec/liquidglass/register.sh
+echo 'Liquid Glass installed. Select LiquidGlass in System > System > Language and Style.'
+exit 0

@@ -1,0 +1,76 @@
+{#
+	Argon is a clean HTML5 theme for LuCI. It is based on luci-theme-material Argon Template
+
+	luci-theme-argon
+	Copyright 2020 Jerrykuku <jerrykuku@qq.com>
+
+	Have a bug? Please create an issue here on GitHub!
+	https://github.com/jerrykuku/luci-theme-argon/issues
+
+	luci-theme-material:
+	Copyright 2015 Lutty Yang <lutty@wcan.in>
+
+	Argon Theme
+	https://demos.creative-tim.com/argon-dashboard/index.html
+
+	Licensed to the public under the Apache License 2.0
+ Modified for Liquid Glass 1.0 (2026): namespaced assets, accessible appearance controls, local-only styling.
+-#}
+
+{%
+    import { getuid, getspnam } from 'luci.core';
+    const boardinfo = ubus.call("system", "board");
+    const hostname = striptags(boardinfo?.hostname ?? '?');
+    const bar_color = '#dceaff';
+    http.prepare_content('text/html; charset=UTF-8');
+-%}
+<!DOCTYPE html>
+<html lang="{{ dispatcher.lang }}">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ hostname }}{{ node?.title ? ` - ${striptags(node.title)}` : '' }} - LuCI</title>
+
+	<!-- SEO and Description -->
+	<meta name="robots" content="noindex, nofollow">
+
+	<!-- Security -->
+	<meta http-equiv="X-Content-Type-Options" content="nosniff">
+	<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+	<meta http-equiv="X-XSS-Protection" content="1; mode=block">
+	<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
+	<!-- Mobile and PWA -->
+	<meta name="format-detection" content="telephone=no, email=no">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-title" content="{{ hostname }} - LuCI">
+
+	<!-- Theme and Colors -->
+	<meta name="theme-color" content="{{ bar_color }}">
+	<meta name="msapplication-TileColor" content="{{ bar_color }}">
+	<meta name="msapplication-TileImage" content="{{ media }}/icon/ms-icon-144x144.png">
+	<meta name="application-name" content="{{ hostname }} - LuCI">
+
+	<link rel="icon" type="image/svg+xml" href="{{ media }}/img/liquidglass.svg">
+	<link rel="stylesheet" href="{{ media }}/css/cascade.css?v=2.4.3">
+
+    <link id="lg-dark-css" rel="stylesheet" href="{{ media }}/css/dark.css?v=1.0.0" media="(prefers-color-scheme: dark)">
+    <script src="{{ media }}/js/liquidglass.js?v=1.0.11"></script>
+
+
+	{% if (node?.css): %}
+	<link rel="stylesheet" href="{{ resource }}/{{ node.css}}">
+	{% endif -%}
+	{% if (css): %}
+	<style title="text/css">
+		{{ css }}
+	</style>
+	{% endif -%}
+
+    <link rel="stylesheet" href="{{ media }}/css/liquidglass.css?v=1.0.11">
+</head>
+
+<body class="lg-login">
