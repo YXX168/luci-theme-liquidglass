@@ -32,7 +32,7 @@ define Package/luci-theme-liquidglass/install
 	$(CP) ./ucode/template/themes/liquidglass $(1)/usr/share/ucode/luci/template/themes/
 	$(CP) ./root/* $(1)/
 	$(CP) ./LICENSE ./NOTICE $(1)/usr/share/doc/luci-theme-liquidglass/
-	chmod 755 $(1)/etc/uci-defaults/30-luci-theme-liquidglass $(1)/usr/libexec/liquidglass/register.sh
+	chmod 755 $(1)/etc/uci-defaults/30-luci-theme-liquidglass $(1)/usr/libexec/liquidglass/*.sh
 endef
 
 define Package/luci-theme-liquidglass/postinst

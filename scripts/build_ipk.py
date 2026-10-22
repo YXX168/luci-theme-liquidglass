@@ -5,6 +5,7 @@ import hashlib
 import io
 import json
 import tarfile
+import time
 import zipfile
 
 BASE = Path(__file__).resolve().parents[1]
@@ -78,10 +79,16 @@ Description: Standalone Liquid Glass theme for modern ucode-based LuCI
     source = DIST / f'{NAME}-1.0.0-source.zip'
     includes = ['htdocs', 'ucode', 'root', 'package']
     files = [p for folder in includes for p in (BASE / folder).rglob('*') if p.is_file()]
-    files += [BASE / p for p in ['LICENSE', 'NOTICE', 'Makefile', 'README.md', 'scripts/build_ipk.py']]
+    files += [BASE / p for p in ['LICENSE', 'NOTICE', 'Makefile', 'README.md', 'VALIDATION.md', 'scripts/build_ipk.py', 'tests/test_build_ipk.py']]
     with zipfile.ZipFile(source, 'w', zipfile.ZIP_DEFLATED) as z:
         for file in sorted(files):
-            z.write(file, NAME + '/' + file.relative_to(BASE).as_posix())
+            # Checkout mtimes and host permissions must not change release hashes.
+            info = zipfile.ZipInfo(NAME + '/' + file.relative_to(BASE).as_posix(), time.gmtime(EPOCH)[:6])
+            info.create_system = 3
+            mode = 0o755 if file.suffix == '.sh' or file.name in ('postinst', 'prerm', '30-luci-theme-liquidglass') else 0o644
+            info.external_attr = (0o100000 | mode) << 16
+            info.compress_type = zipfile.ZIP_DEFLATED
+            z.writestr(info, file.read_bytes())
     hashes = '\n'.join(f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}' for p in [output, source]) + '\n'
     (DIST / 'SHA256SUMS.txt').write_text(hashes, encoding='ascii')
     print(output)
