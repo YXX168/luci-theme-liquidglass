@@ -1,0 +1,24 @@
+name: Package checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Check installation scripts
+        run: |
+          sh -n package/postinst
+          sh -n package/prerm
+          find root -type f -exec sh -n {} \;
+      - run: python3 -m unittest discover -s tests -v
